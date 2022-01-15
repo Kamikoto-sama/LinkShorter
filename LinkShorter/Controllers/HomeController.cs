@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using LinkShorter.Helpers;
 using LinkShorter.Models;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 

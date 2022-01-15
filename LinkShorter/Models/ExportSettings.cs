@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace LinkShorter.Models
+﻿namespace LinkShorter.Models
 {
     public record ExportSettings
     {

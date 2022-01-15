@@ -18,7 +18,7 @@ namespace LinkShorter.Helpers
             var visit = new VisitModel
             {
                 Date = DateTime.UtcNow,
-                Link = link,
+                Link = link
             };
 
             storage.Visits.Add(visit);

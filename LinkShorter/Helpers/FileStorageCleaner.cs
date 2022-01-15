@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,10 +9,10 @@ namespace LinkShorter.Helpers
 {
     public class FileStorageCleaner
     {
-        private readonly IWebHostEnvironment env;
-        private readonly ILogger<FileStorageCleaner> logger;
         private readonly TimeSpan checkInterval;
+        private readonly IWebHostEnvironment env;
         private readonly TimeSpan fileExpatriationTime;
+        private readonly ILogger<FileStorageCleaner> logger;
 
         public FileStorageCleaner(FileStorageCleanerSettings settings, IWebHostEnvironment env, ILogger<FileStorageCleaner> logger)
         {

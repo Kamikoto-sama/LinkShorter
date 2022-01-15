@@ -1,6 +1,7 @@
-.hidden{
+.hidden {
     display: none;
 }
-button{
+
+button {
     cursor: pointer;
 }

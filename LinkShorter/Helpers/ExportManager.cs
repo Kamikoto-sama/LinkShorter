@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -18,11 +17,11 @@ namespace LinkShorter.Helpers
     public class ExportManager
     {
         private const string ExportDir = "storage/export";
-
-        private readonly StorageContext storage;
+        private readonly IWebHostEnvironment env;
         private readonly IOptionsSnapshot<ExportSettings> exportSettings;
         private readonly ILogger<ExportManager> logger;
-        private readonly IWebHostEnvironment env;
+
+        private readonly StorageContext storage;
 
         public ExportManager(StorageContext storage, IOptionsSnapshot<ExportSettings> exportSettings, ILogger<ExportManager> logger, IWebHostEnvironment env)
         {
@@ -65,7 +64,7 @@ namespace LinkShorter.Helpers
             return (full, relative);
         }
 
-        private async Task CreateExportFileAsync(List<IEnumerable<IGrouping<Guid,VisitModel>>> visitDateGroups, string filePath)
+        private async Task CreateExportFileAsync(List<IEnumerable<IGrouping<Guid, VisitModel>>> visitDateGroups, string filePath)
         {
             var exportLines = visitDateGroups.SelectMany(dateGroup => dateGroup
                 .Select(idGroup =>
@@ -90,7 +89,7 @@ namespace LinkShorter.Helpers
             await ExportFileBuilder.CreateCsvFileAsync(filePath, headers.Length, exportLines.Prepend(headersLine));
         }
 
-        private async Task<List<IEnumerable<IGrouping<Guid,VisitModel>>>> GetVisits(DateTime since, DateTime until)
+        private async Task<List<IEnumerable<IGrouping<Guid, VisitModel>>>> GetVisits(DateTime since, DateTime until)
         {
             var visits = await storage.Visits
                 .Where(visit => visit.Date >= since && visit.Date <= until)
