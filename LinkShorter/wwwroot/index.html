@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div>
+        <label for="access-key">Access key:</label>
+        <input id="access-key" placeholder="Access key" type="text" value="123">
+    </div>
+    <hr>
+    <div>
+        <button id="create-link-tab-btn">Create link</button>
+        <button id="export-tab-btn">Export</button>
+    </div>
+    <div id="create-link-tab">
+        <h3>Create link:</h3>
+        <label for="original-url">Original url:</label>
+        <input id="original-url" placeholder="Original url" type="text" value="https://google.com">
+        <br>
+        <label for="short-link-name">Short link name: </label>
+        <input id="short-link-name" placeholder="(optional)" type="text">
+        <br>
+        <br>
+        <div>
+            <label for="custom-field-">Name:</label>
+            <br>
+            <textarea id="custom-field-" name="name"></textarea>
+        </div>
+        <br>
+        <button id="submit" type="submit">Submit</button>
+        <hr>
+        <div id="result-links-container">
+            <h4><a href="https://google.com">http://localhost:5000</a></h4>
+        </div>
+    </div>
+    <div id="export-tab">
+        <h3>Export:</h3>
+        <label for="export-date-since">Since:</label>
+        <input type="date" id="export-date-since"><br><br>
+        <label for="export-date-until">Until:</label>
+        <input type="date" id="export-date-until"><br>
+        <br>
+        <button id="export-btn">Create export</button>
+    </div>
+</div>
+</body>
+<script src="script.js"></script>
+</html>
