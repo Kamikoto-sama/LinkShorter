@@ -13,12 +13,7 @@
 	<ItemGroup>
 		<None Include="wwwroot\index.html" />
 		<None Include="wwwroot\script.js" />
-		<None Include="wwwroot\storage\export\10-01-2022.csv" />
 		<None Include="wwwroot\styles.css" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="wwwroot\storage" />
 	</ItemGroup>
 
 </Project>

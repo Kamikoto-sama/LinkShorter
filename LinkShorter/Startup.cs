@@ -26,13 +26,15 @@ namespace LinkShorter
             services.Configure<AuthSettings>(configuration.GetSection(nameof(AuthSettings)));
             services.Configure<CustomTagsSettings>(configuration.GetSection(nameof(CustomTagsSettings)));
             services.Configure<ExportSettings>(configuration.GetSection(nameof(ExportSettings)));
-            services.Configure<FileStorageCleanerSettings>(configuration.GetSection(nameof(FileStorageCleanerSettings)));
+            services.AddSingleton<FileStorageCleanerSettings>();
 
             services.AddScoped<AccessKeyProvider>();
             services.AddScoped<VisitManager>();
             services.AddScoped<ExportManager>();
             services.AddScoped<LinkManager>();
 
+            var cleanerSettings = configuration.GetSection(nameof(FileStorageCleanerSettings)).Get<FileStorageCleanerSettings>();
+            services.AddSingleton(cleanerSettings);
             services.AddSingleton<FileStorageCleaner>();
 
             services.AddControllersWithViews();
