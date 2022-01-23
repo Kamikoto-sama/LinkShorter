@@ -111,7 +111,8 @@ async function createExport() {
 
 	const body = {
 		since: exportDateSince.value,
-		until: exportDateUntil.value
+		until: exportDateUntil.value,
+		accessKey: accessKey.value
 	}
 
 	const response = await fetch("/api/export/create", {

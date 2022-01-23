@@ -34,7 +34,6 @@ namespace LinkShorter
             services.Configure<AuthSettings>(configuration.GetSection(nameof(AuthSettings)));
             services.Configure<CustomTagsSettings>(configuration.GetSection(nameof(CustomTagsSettings)));
             services.Configure<ExportSettings>(configuration.GetSection(nameof(ExportSettings)));
-            services.AddSingleton<FileStorageCleanerSettings>();
 
             services.AddScoped<AccessKeyProvider>();
             services.AddScoped<VisitManager>();
