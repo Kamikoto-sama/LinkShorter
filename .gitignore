@@ -1,6 +1,6 @@
 .idea
 **/bin
 **/obj
-**/storage
+**/wwwroot/storage
 *.db
 *privateSettings*
