@@ -41,7 +41,7 @@ namespace LinkShorter.Helpers
             }
 
             if (visits.Value.Count <= 0)
-                return Result.Fail("No visitDateGroups to export");
+                return Result.Fail("No visits to export!");
 
             var (full, relative) = GetExportFilePath();
             await CreateExportFileAsync(visits.Value, full);
