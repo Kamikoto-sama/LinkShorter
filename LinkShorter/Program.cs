@@ -6,6 +6,8 @@ namespace LinkShorter
 {
     public class Program
     {
+        private const string EnvVarPrefix = "ls.";
+
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
@@ -14,7 +16,7 @@ namespace LinkShorter
         private static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration(config => config.AddJsonFile("PrivateSettings.json", false, true))
+                .ConfigureAppConfiguration(config => config.AddEnvironmentVariables(EnvVarPrefix))
                 .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>());
         }
     }

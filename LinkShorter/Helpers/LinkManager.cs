@@ -52,7 +52,7 @@ namespace LinkShorter.Helpers
             if (linkModel == null)
                 return null;
 
-            visitManager.RegisterVisit(linkModel);
+            await visitManager.RegisterVisit(linkModel);
 
             return linkModel.OriginalUrl;
         }

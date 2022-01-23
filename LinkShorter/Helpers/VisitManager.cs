@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using LinkShorter.Storage;
 using LinkShorter.Storage.Models;
 
@@ -13,7 +14,7 @@ namespace LinkShorter.Helpers
             this.storage = storage;
         }
 
-        public async void RegisterVisit(LinkModel link)
+        public async Task RegisterVisit(LinkModel link)
         {
             var visit = new VisitModel
             {

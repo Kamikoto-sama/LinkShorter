@@ -13,15 +13,23 @@ namespace LinkShorter
     public class Startup
     {
         private readonly IConfiguration configuration;
+        private readonly IWebHostEnvironment env;
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             this.configuration = configuration;
+            this.env = env;
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<StorageContext>(builder => builder.UseSqlite(configuration.GetConnectionString("sqlite")));
+            services.AddDbContext<StorageContext>(builder =>
+            {
+                if (env.IsDevelopment())
+                    builder.UseSqlite(configuration.GetConnectionString("sqlite"));
+                else
+                    builder.UseNpgsql(configuration.GetConnectionString("postgres"));
+            });
 
             services.Configure<AuthSettings>(configuration.GetSection(nameof(AuthSettings)));
             services.Configure<CustomTagsSettings>(configuration.GetSection(nameof(CustomTagsSettings)));
@@ -40,7 +48,7 @@ namespace LinkShorter
             services.AddControllersWithViews();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
@@ -48,7 +56,6 @@ namespace LinkShorter
             using (var scope = app.ApplicationServices.CreateScope())
             {
                 var storage = scope.ServiceProvider.GetRequiredService<StorageContext>();
-                // storage.Database.EnsureDeleted();
                 storage.Database.EnsureCreated();
             }
 

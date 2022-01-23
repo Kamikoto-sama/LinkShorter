@@ -1,26 +1,21 @@
 ﻿{
-  "iisSettings": {
-	"windowsAuthentication": false,
-	"anonymousAuthentication": true,
-	"iisExpress": {
-	  "applicationUrl": "http://localhost:1464",
-	  "sslPort": 44300
-	}
-  },
   "profiles": {
-	"IIS Express": {
-	  "commandName": "IISExpress",
-	  "launchBrowser": true,
+	"LinkShorter (Dev)": {
+	  "commandName": "Project",
+	  "applicationUrl": "http://localhost:5000",
 	  "environmentVariables": {
-		"ASPNETCORE_ENVIRONMENT": "Development"
+		"ASPNETCORE_ENVIRONMENT": "Development",
+		"ls.AuthSettings__AccessKey": "1234",
+		"ls.ConnectionStrings__sqlite": "Filename=storage.db"
 	  }
 	},
-	"WebApplication1": {
+	"LinkShorter (Prod)": {
 	  "commandName": "Project",
-	  "dotnetRunMessages": "true",
-	  "applicationUrl": "https://localhost:5001;http://localhost:5000",
+	  "applicationUrl": "http://localhost:5000",
 	  "environmentVariables": {
-		"ASPNETCORE_ENVIRONMENT": "Development"
+		"ASPNETCORE_ENVIRONMENT": "Production",
+		"ls.AuthSettings__AccessKey": "1234",
+		"ls.ConnectionStrings__postgres": "Host=localhost;Port=5432;Database=storage;Username=postgres;Password=1234"
 	  }
 	}
   }
