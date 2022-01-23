@@ -12,15 +12,20 @@ namespace LinkShorter.Controllers
     public class ExportController : Controller
     {
         private readonly ExportManager exportManager;
+        private readonly AccessKeyProvider accessKeyProvider;
 
-        public ExportController(ExportManager exportManager)
+        public ExportController(ExportManager exportManager, AccessKeyProvider accessKeyProvider)
         {
             this.exportManager = exportManager;
+            this.accessKeyProvider = accessKeyProvider;
         }
 
         [HttpPost("create")]
         public async Task<IActionResult> CreateExport([FromBody] CreateExportDto model)
         {
+            if (!accessKeyProvider.ValidateKey(model.AccessKey))
+                return Unauthorized();
+
             if (model.Since == default)
                 return BadRequest($"Invalid since date: {model.Since}");
             if (model.Until == default)

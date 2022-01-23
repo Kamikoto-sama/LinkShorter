@@ -96,6 +96,10 @@ const exportDateUntil = document.getElementById("export-date-until")
 exportBtn.addEventListener("click", createExport)
 
 async function createExport() {
+	if (accessKey.value === "") {
+		alert("Access key is empty!")
+		return false
+	}
 	if (exportDateSince.value === "") {
 		alert("Since date is empty!")
 		return
@@ -117,7 +121,9 @@ async function createExport() {
 	})
 
 	const content = await response.text();
-	if (!response.ok)
+	if (response.status === 401)
+		alert("Invalid access key!")
+	else if (!response.ok)
 		alert(content)
 	else
 		window.open(content, "_blank")
