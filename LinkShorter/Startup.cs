@@ -3,6 +3,7 @@ using LinkShorter.Models;
 using LinkShorter.Storage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -49,14 +50,16 @@ namespace LinkShorter
 
         public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
-                app.UseDeveloperExceptionPage();
-
             using (var scope = app.ApplicationServices.CreateScope())
             {
                 var storage = scope.ServiceProvider.GetRequiredService<StorageContext>();
                 storage.Database.EnsureCreated();
             }
+
+            if (env.IsDevelopment())
+                app.UseDeveloperExceptionPage();
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions { ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto });
 
             app.ApplicationServices.GetRequiredService<FileStorageCleaner>().Start();
 
