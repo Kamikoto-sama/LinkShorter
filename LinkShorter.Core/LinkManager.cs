@@ -7,12 +7,10 @@ namespace LinkShorter.Core
     public class LinkManager
     {
         private readonly DataContext data;
-        private readonly VisitManager visitManager;
 
-        public LinkManager(DataContext data, VisitManager visitManager)
+        public LinkManager(DataContext data)
         {
             this.data = data;
-            this.visitManager = visitManager;
         }
 
         public async Task<bool> CheckLinkNameExists(string linkName)

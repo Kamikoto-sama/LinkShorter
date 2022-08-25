@@ -46,8 +46,9 @@ async function createLink(customTags) {
 		alert(content)
 }
 
+const baseUrl = "https://a.apiexperts.ru"
 function addResultLink(linkName) {
-	const url = `${(document.URL)}${linkName}`
+	const url = `${baseUrl}/${linkName}`
 	const resultLink = document.createElement("h4")
 	resultLink.innerHTML += `<a href="${url}">${url}</a>`
 	resultLinksContainer.appendChild(resultLink)
