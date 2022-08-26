@@ -2,7 +2,6 @@
 using LinkShorter.Core;
 using LinkShorter.Core.Models;
 using LinkShorter.Export.Models;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -10,7 +9,6 @@ namespace LinkShorter.Export
 {
     public class ExportManager
     {
-        private const string ExportDir = "~/storage/export";
         private readonly VisitManager visitManager;
         private readonly IOptionsSnapshot<ExportSettings> exportSettings;
         private readonly ILogger<ExportManager> logger;
@@ -22,10 +20,8 @@ namespace LinkShorter.Export
             this.logger = logger;
         }
 
-        public async Task<Result<string>> CreateExportAsync(DateTime since, DateTime until)
+        public async Task<Result<ExportFile>> CreateExportFileAsync(DateTime since, DateTime until)
         {
-            until = until.Add(TimeSpan.Parse("23:59:59"));
-
             var visits = await Result.Try(() => GetGroupedVisits(since, until));
             if (visits.IsFailed)
             {
@@ -36,25 +32,23 @@ namespace LinkShorter.Export
             if (visits.Value.Count <= 0)
                 return Result.Fail("No visits to export!");
 
-            var path = GetExportFilePath();
-            await CreateExportFileAsync(visits.Value, path);
+            var fileContent = await CreateExportFileContentAsync(visits.Value);
 
-            return Result.Ok(path);
+            var fileName = GetFileName();
+            var export = new ExportFile(fileContent, exportSettings.Value.FileType, fileName);
+            return Result.Ok(export);
         }
 
-        private string GetExportFilePath()
+        private string GetFileName()
         {
-            Directory.CreateDirectory(ExportDir);
-
             var fileType = exportSettings.Value.FileType;
             var date = DateTime.UtcNow.ToString("dd-MM-yyyy");
-            var hash = new Random().Next(int.MinValue, int.MaxValue).ToString("x8");
-            var fileName = $"{date}-{hash}.{fileType}";
+            var hash = Random.Shared.Next(int.MinValue, int.MaxValue).ToString("x8");
 
-            return Path.Combine(ExportDir, fileName);
+            return $"{date}-{hash}.{fileType}";
         }
 
-        private async Task CreateExportFileAsync(List<IEnumerable<IGrouping<string, Visit>>> visitDateGroups, string filePath)
+        private async Task<byte[]> CreateExportFileContentAsync(List<IEnumerable<IGrouping<string, Visit>>> visitDateGroups)
         {
             var exportLines = visitDateGroups.SelectMany(dateGroup => dateGroup
                 .Select(idGroup =>
@@ -76,11 +70,13 @@ namespace LinkShorter.Export
 
             var headers = exportSettings.Value.ExportFields;
             var headersLine = new ExportLine(headers.Select((x, i) => new ExportLineValue(i, x)));
-            await ExportFileBuilder.CreateCsvFileAsync(filePath, headers.Length, exportLines.Prepend(headersLine));
+
+            return await CsvBuilder.CreateCsvContentAsync(headers.Length, exportLines.Prepend(headersLine).ToArray());
         }
 
         private async Task<List<IEnumerable<IGrouping<string, Visit>>>> GetGroupedVisits(DateTime since, DateTime until)
         {
+            until = until.Add(TimeSpan.Parse("23:59:59"));
             var visits = await visitManager.GetVisits(since, until);
             return visits
                 .GroupBy(visit => visit.Date.Date)

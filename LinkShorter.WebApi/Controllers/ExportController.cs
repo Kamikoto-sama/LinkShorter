@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using LinkShorter.Export;
 using LinkShorter.WebApi.Models;
@@ -21,21 +22,25 @@ namespace LinkShorter.WebApi.Controllers
             this.accessKeyProvider = accessKeyProvider;
         }
 
-        [HttpPost("create")]
-        public async Task<IActionResult> CreateExport([FromBody] CreateExportDto model)
+        [HttpGet("create")]
+        public async Task<IActionResult> CreateExport(string accessKey, DateTime since, DateTime until)
         {
-            if (!accessKeyProvider.ValidateKey(model.AccessKey))
+            if (!accessKeyProvider.ValidateKey(accessKey))
                 return Unauthorized();
 
-            if (model.Since == default)
-                return BadRequest($"Invalid since date: {model.Since}");
-            if (model.Until == default)
-                return BadRequest($"Invalid until date: {model.Until}");
+            if (since == default)
+                return BadRequest($"Invalid since date: {since}");
+            if (until == default)
+                return BadRequest($"Invalid until date: {until}");
 
-            var exportFilePath = await exportManager.CreateExportAsync(model.Since, model.Until);
-            if (exportFilePath.IsFailed)
-                return BadRequest(exportFilePath.Reasons.First().Message);
-            return Ok(exportFilePath.Value);
+            var start = since.ToUniversalTime();
+            var end = until.ToUniversalTime();
+            var result = await exportManager.CreateExportFileAsync(start.AddHours(-start.Hour), end.AddHours(-end.Hour));
+            if (result.IsFailed)
+                return BadRequest(result.Reasons.First().Message);
+
+            var exportFile = result.Value;
+            return File(exportFile.Content, MediaTypeNames.Text.Plain, exportFile.Name);
         }
     }
 }

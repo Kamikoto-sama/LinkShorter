@@ -5,8 +5,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="6.0.3" />
-		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.3" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="6.0.8" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.6" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -21,6 +21,11 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\LinkShorter.Export\LinkShorter.Export.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <_ContentIncludedByDefault Remove="wwwroot\storage\export\23-01-2022-1248288e.csv" />
+	  <_ContentIncludedByDefault Remove="wwwroot\storage\export\23-01-2022-4d7194d8.csv" />
 	</ItemGroup>
 
 </Project>

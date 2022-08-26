@@ -43,10 +43,6 @@ namespace LinkShorter.WebApi
             services.AddScoped<ExportManager>();
             services.AddScoped<LinkManager>();
 
-            var cleanerSettings = configuration.GetSection(nameof(FileStorageCleanerSettings)).Get<FileStorageCleanerSettings>();
-            services.AddSingleton(cleanerSettings);
-            services.AddHostedService<FileStorageCleaner>();
-
             services.AddControllersWithViews();
         }
 

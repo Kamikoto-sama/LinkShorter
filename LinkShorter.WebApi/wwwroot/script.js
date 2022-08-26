@@ -47,6 +47,7 @@ async function createLink(customTags) {
 }
 
 const baseUrl = "https://a.apiexperts.ru"
+
 function addResultLink(linkName) {
 	const url = `${baseUrl}/${linkName}`
 	const resultLink = document.createElement("h4")
@@ -110,23 +111,6 @@ async function createExport() {
 		return
 	}
 
-	const body = {
-		since: exportDateSince.value,
-		until: exportDateUntil.value,
-		accessKey: accessKey.value
-	}
-
-	const response = await fetch("/api/export/create", {
-		method: "POST",
-		headers: {"Content-Type": "application/json"},
-		body: JSON.stringify(body)
-	})
-
-	const content = await response.text();
-	if (response.status === 401)
-		alert("Invalid access key!")
-	else if (!response.ok)
-		alert(content)
-	else
-		window.open(content, "_blank")
+	const uri = `/api/export/create?accessKey=${accessKey.value}&since=${exportDateSince.value}&until=${exportDateUntil.value}`;
+	window.open(uri, "_blank")
 }
