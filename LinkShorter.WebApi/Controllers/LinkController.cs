@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using LinkShorter.Core;
+using LinkShorter.Core.Models;
 using LinkShorter.WebApi.Models;
 using LinkShorter.WebApi.Utils;
 using Microsoft.AspNetCore.Mvc;
@@ -38,7 +40,8 @@ namespace LinkShorter.WebApi.Controllers
             if (exists)
                 return BadRequest($"Such link name already exists: {model.ShortLinkName}");
 
-            linkName = await linkManager.CreateLink(model.OriginalUrl, linkName, null);
+            var tags = model.CustomTags.Select(x => new CustomTag { Id = Guid.NewGuid(), Index = x.Index, Value = x.Value }).ToList();
+            linkName = await linkManager.CreateLink(model.OriginalUrl, linkName, tags);
             return linkName == null ? BadRequest("Cannot create link. Try again later") : Ok(linkName);
         }
     }

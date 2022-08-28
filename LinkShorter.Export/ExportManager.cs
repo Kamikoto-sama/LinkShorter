@@ -39,14 +39,7 @@ namespace LinkShorter.Export
             return Result.Ok(export);
         }
 
-        private string GetFileName()
-        {
-            var fileType = exportSettings.Value.FileType;
-            var date = DateTime.UtcNow.ToString("dd-MM-yyyy");
-            var hash = Random.Shared.Next(int.MinValue, int.MaxValue).ToString("x8");
-
-            return $"{date}-{hash}.{fileType}";
-        }
+        private string GetFileName() => "DanLS_ClickReport.csv";
 
         private async Task<byte[]> CreateExportFileContentAsync(List<IEnumerable<IGrouping<string, Visit>>> visitDateGroups)
         {
@@ -76,7 +69,8 @@ namespace LinkShorter.Export
 
         private async Task<List<IEnumerable<IGrouping<string, Visit>>>> GetGroupedVisits(DateTime since, DateTime until)
         {
-            until = until.Add(TimeSpan.Parse("23:59:59"));
+            since = new DateTime(since.Year, since.Month, since.Day, 0, 0, 0, DateTimeKind.Utc);
+            until = new DateTime(until.Year, until.Month, until.Day, 23, 59, 59, DateTimeKind.Utc);
             var visits = await visitManager.GetVisits(since, until);
             return visits
                 .GroupBy(visit => visit.Date.Date)

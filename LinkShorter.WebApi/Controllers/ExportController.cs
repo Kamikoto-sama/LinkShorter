@@ -33,9 +33,7 @@ namespace LinkShorter.WebApi.Controllers
             if (until == default)
                 return BadRequest($"Invalid until date: {until}");
 
-            var start = since.ToUniversalTime();
-            var end = until.ToUniversalTime();
-            var result = await exportManager.CreateExportFileAsync(start.AddHours(-start.Hour), end.AddHours(-end.Hour));
+            var result = await exportManager.CreateExportFileAsync(since, until);
             if (result.IsFailed)
                 return BadRequest(result.Reasons.First().Message);
 
