@@ -55,7 +55,7 @@ namespace LinkShorter.Export
                             visit.Link.Name,
                             visit.Link.OriginalUrl
                         }
-                        .Concat(visit.Link.CustomTags.Select(tag => tag.Value))
+                        .Concat(visit.Link.CustomTags.OrderBy(x => x.Index).Select(tag => tag.Value))
                         .Select((value, index) => new ExportLineValue(index, value));
 
                     return new ExportLine(exportValues);
