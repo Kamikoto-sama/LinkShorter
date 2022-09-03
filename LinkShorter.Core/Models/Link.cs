@@ -6,5 +6,6 @@
         public string Name { get; init; }
         public string OriginalUrl { get; init; }
         public List<CustomTag> CustomTags { get; init; }
+        public DateTime Created { get; init; }
     }
 }

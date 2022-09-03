@@ -28,7 +28,8 @@ namespace LinkShorter.Core
             {
                 Name = linkName,
                 OriginalUrl = originalUrl,
-                CustomTags = customTags
+                CustomTags = customTags,
+                Created = DateTime.UtcNow
             };
 
             data.Links.Add(linkModel);
